@@ -2,8 +2,11 @@
 Official PyTorch implementation of the Diffusion-Guided Graph Data Augmentation (NeurIPS, 2025) Paper
 
 Authors: Maria Marrium<sup>1</sup>, Arif Mahmood<sup>1</sup>, Muhmmad Haris Khan<sup>2</sup>, Muhammad Saad Shakeel<sup>3</sup>, Wenxiong Kang<sup>3</sup>
+
 <sup>1</sup> Information Technology Univeristy, Lahore Pakistan
+
 <sup>2</sup> MBZUAI, Abu Dhabi, UAE
+
 <sup>3</sup> South China University of Technology, Guangdong, China
 
 # Acknowledgement
