@@ -1,5 +1,5 @@
 # Diffusion-Guided Graph Data Augmentation
-Official PyTorch implementation of the Diffusion-Guided Graph Data Augmentation (NeurIPS, 2025) Paper
+Official PyTorch implementation of the NeurIPS 2025 paper "Diffusion-Guided Graph Data Augmentation".
 
 Authors: Maria Marrium<sup>1</sup>, Arif Mahmood<sup>1</sup>, Muhmmad Haris Khan<sup>2</sup>, Muhammad Saad Shakeel<sup>3</sup>, Wenxiong Kang<sup>3</sup>
 
