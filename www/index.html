@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>D-GDA: Diffusion-Guided Graph Data Augmentation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', 'Times New Roman', Times, serif;
+            line-height: 1.8;
+            color: #222;
+            background: #ffffff;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            padding: 50px 60px;
+        }
+
+        header {
+            background: white;
+            color: #222;
+            padding: 40px 0;
+            text-align: center;
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 40px;
+        }
+
+        h1 {
+            font-size: 2.2em;
+            margin-bottom: 25px;
+            font-weight: 400;
+            line-height: 1.3;
+        }
+
+        .authors {
+            font-size: 1.05em;
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+
+        .affiliations {
+            font-size: 0.9em;
+            color: #555;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        .conference {
+            font-size: 1em;
+            font-weight: normal;
+            margin-top: 15px;
+            font-style: italic;
+        }
+
+        .links {
+            margin-top: 25px;
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 0;
+            background: none;
+            color: #2563eb;
+            text-decoration: underline;
+            font-weight: normal;
+            transition: color 0.2s;
+            display: inline;
+        }
+
+        .btn:hover {
+            color: #1d4ed8;
+        }
+
+        .content {
+            padding: 0;
+        }
+
+        section {
+            margin-bottom: 50px;
+        }
+
+        h2 {
+            font-size: 1.6em;
+            color: #222;
+            margin-bottom: 20px;
+            margin-top: 40px;
+            font-weight: 400;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 8px;
+        }
+
+        h3 {
+            font-size: 1.2em;
+            color: #222;
+            margin: 25px 0 12px 0;
+            font-weight: 400;
+            font-style: italic;
+        }
+
+        p {
+            margin-bottom: 15px;
+            text-align: justify;
+            font-size: 1em;
+        }
+
+        .abstract {
+            background: white;
+            padding: 0;
+            margin: 20px 0;
+        }
+
+        .figure {
+            margin: 30px 0;
+            text-align: center;
+        }
+
+        .figure img {
+            max-width: 100%;
+            height: auto;
+            border: 1px solid #ddd;
+        }
+
+        .figure-caption {
+            margin-top: 10px;
+            font-style: italic;
+            color: #555;
+            font-size: 0.9em;
+            text-align: left;
+        }
+
+        .table-container {
+            overflow-x: auto;
+            margin: 25px 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            font-size: 0.9em;
+        }
+
+        th {
+            background: white;
+            color: #222;
+            padding: 10px 12px;
+            text-align: left;
+            font-weight: 400;
+            border-top: 2px solid #222;
+            border-bottom: 1px solid #222;
+        }
+
+        td {
+            padding: 8px 12px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        tbody tr:last-child td {
+            border-bottom: 2px solid #222;
+        }
+
+        tr:hover {
+            background: #fafafa;
+        }
+
+        .highlight {
+            background: none;
+            font-weight: bold;
+        }
+
+        .bibtex {
+            background: #f5f5f5;
+            color: #222;
+            padding: 20px;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85em;
+            line-height: 1.6;
+            border: 1px solid #ddd;
+        }
+
+        .key-contributions {
+            margin: 25px 0;
+        }
+
+        .contribution-card {
+            background: white;
+            padding: 0;
+            margin-bottom: 15px;
+        }
+
+        .contribution-card h4 {
+            color: #222;
+            margin-bottom: 8px;
+            font-size: 1.05em;
+            font-weight: 400;
+        }
+
+        .results-grid {
+            display: block;
+            margin: 25px 0;
+        }
+
+        .result-card {
+            background: white;
+            padding: 0;
+            margin-bottom: 15px;
+            text-align: left;
+        }
+
+        .result-value {
+            font-size: 1.1em;
+            font-weight: normal;
+            color: #222;
+            display: inline;
+        }
+
+        .result-label {
+            font-size: 1em;
+            color: #222;
+            display: inline;
+        }
+
+        footer {
+            background: white;
+            color: #555;
+            text-align: center;
+            padding: 30px 0;
+            font-size: 0.9em;
+            border-top: 1px solid #ddd;
+            margin-top: 50px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 30px 20px;
+            }
+
+            h1 {
+                font-size: 1.8em;
+            }
+
+            h2 {
+                font-size: 1.4em;
+            }
+        }
+
+        .method-diagram {
+            background: white;
+            padding: 0;
+            margin: 25px 0;
+        }
+
+        ul, ol {
+            margin-left: 30px;
+            margin-bottom: 20px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        strong {
+            color: #222;
+            font-weight: bold;
+        }
+
+        #citation {
+            background: #f9f9f9;
+            padding: 25px;
+            margin-top: 40px;
+        }
+
+        a {
+            color: #2563eb;
+            text-decoration: underline;
+            font-weight: normal;
+        }
+
+        a:hover {
+            color: #1d4ed8;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Diffusion-Guided Graph Data Augmentation</h1>
+            <div class="authors">
+                Maria Marrium<sup>1</sup>, Arif Mahmood<sup>1</sup>, Muhammad Haris Khan<sup>2</sup>,
+                Muhammad Saad Shakeel<sup>3</sup>, Wenxiong Kang<sup>3</sup>
+            </div>
+            <div class="affiliations">
+                <sup>1</sup>Information Technology University, Lahore, Pakistan<br>
+                <sup>2</sup>MBZUAI, Abu Dhabi, UAE<br>
+                <sup>3</sup>South China University of Technology, Guangdong, China
+            </div>
+            <div class="conference">
+                NeurIPS 2025
+            </div>
+            <div class="links">
+                <a href="https://github.com/MariaMarrium/D-GDA" class="btn" target="_blank">
+                    📂 Code
+                </a>
+                <a href="https://arxiv.org/abs/YOUR_ARXIV_ID" class="btn" target="_blank">
+                    📄 Paper
+                </a>
+            </div>
+        </header>
+
+        <div class="content">
+            <section id="abstract">
+                <h2>Abstract</h2>
+                <div class="abstract">
+                    <p>Graph Neural Networks (GNNs) have achieved remarkable success in a wide range of applications. However, when trained on limited or low-diversity datasets, GNNs are prone to overfitting and memorization, which impacts their generalization. To address this, graph data augmentation (GDA) has become a crucial task to enhance the performance and generalization of GNNs.</p>
+                    
+                    <p>Traditional GDA methods employ simple transformations that result in limited performance gains. Although recent diffusion-based augmentation methods offer improved results, they are sparse, task-specific, and constrained by class labels.</p>
+                    
+                    <p>In this work, we propose <strong>D-GDA</strong>, a more general and effective diffusion-based GDA framework that is <strong>task-agnostic and label-free</strong>. For better training stability and reduced computational cost, we employ a graph variational auto-encoder (GVAE) to learn a compact latent graph representation. A diffusion model is used in the learned latent space to generate both consistent and diverse augmentations.</p>
+                </div>
+            </section>
+
+            <section id="key-contributions">
+                <h2>Key Contributions</h2>
+                <div class="key-contributions">
+                    <div class="contribution-card">
+                        <h4>1. Task-Agnostic Framework</h4>
+                        <p>We propose D-GDA, a label-free, diffusion-based graph data augmentation framework that excels in node classification, link prediction, and graph classification across semi-supervised, supervised, and long-tailed settings. It supports test-time augmentation for enhanced performance.</p>
+                    </div>
+                    <div class="contribution-card">
+                        <h4>2. Neighborhood-Aware Node Generation</h4>
+                        <p>D-GDA leverages a variational auto-encoder and latent diffusion model for proposed neighborhood-aware node generation, ensuring that augmentations preserve local graph structure while introducing meaningful diversity.</p>
+                    </div>
+                    <div class="contribution-card">
+                        <h4>3. Target Sample Selector</h4>
+                        <p>D-GDA introduces a Target Sample Selector to identify effective candidates for augmentation, resulting in overall performance improvement for a fixed augmentation budget by focusing on challenging regions in the training data space.</p>
+                    </div>
+                    <div class="contribution-card">
+                        <h4>4. Enhanced ML Safety</h4>
+                        <p>D-GDA enhances ML safety measures including calibration, resistance to corruption, and consistency. It is more robust against adversarial attacks (Random, DICE, GF, Meta-Attack) and converges to a flatter minima for improved generalization.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="method">
+                <h2>Method Overview</h2>
+                <p>D-GDA comprises three main components that work together to generate high-quality augmentations:</p>
+                
+                <div class="method-diagram">
+                    <h3>1. Target Sample Selector (TSS)</h3>
+                    <p>Identifies samples that would benefit most from augmentation using entropy-based uncertainty estimation. For a fixed augmentation budget, TSS selects nodes with high prediction uncertainty, focusing augmentation on challenging regions of the data space.</p>
+                    
+                    <h3>2. Graph Variational Autoencoder (GVAE)</h3>
+                    <p>Learns compact latent representations of graph structure using:</p>
+                    <ul>
+                        <li><strong>GCN-based Encoder:</strong> Maps node features and adjacency to latent space</li>
+                        <li><strong>Feature Decoder:</strong> Reconstructs node features from latent representations</li>
+                        <li><strong>Link Predictor:</strong> Reconstructs graph structure from latent space</li>
+                    </ul>
+                    
+                    <h3>3. Latent Diffusion Model (LDM)</h3>
+                    <p>Generates diverse augmentations conditioned on neighborhood embeddings. Unlike class-label conditioning, our neighborhood-aware conditioning ensures generated nodes preserve local graph structure while introducing meaningful diversity.</p>
+                </div>
+
+                <div class="figure">
+                    <img src="https://via.placeholder.com/1000x400/667eea/ffffff?text=Architecture+Diagram" alt="D-GDA Architecture">
+                    <div class="figure-caption">Figure 1: Overall architecture of D-GDA showing (A) Node Classification, (B) Link Prediction, and (C) Graph Classification pipelines.</div>
+                </div>
+            </section>
+
+            <section id="results">
+                <h2>Experimental Results</h2>
+                
+                <h3>Performance Improvements</h3>
+                <div class="results-grid">
+                    <p><strong>Cora:</strong> 89.10% (+7.5% improvement over GCN baseline)</p>
+                    <p><strong>Flickr:</strong> 87.30% (+26.1% improvement over GCN baseline)</p>
+                    <p><strong>Citeseer:</strong> 81.50% (+9.9% improvement over GCN baseline)</p>
+                    <p><strong>Pubmed:</strong> 88.20% (+9.4% improvement over GCN baseline)</p>
+                    <p><strong>Ogbn-Arxiv:</strong> 74.80% (+3.18% improvement over GCN baseline)</p>
+                    <p><strong>Ogbn-Products:</strong> 78.85% (+7.48% improvement over GCN baseline)</p>
+                </div>
+
+                <h3>Node Classification Performance</h3>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Method</th>
+                                <th>Cora</th>
+                                <th>Flickr</th>
+                                <th>Citeseer</th>
+                                <th>Pubmed</th>
+                                <th>Mean</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>GCN (Baseline)</td>
+                                <td>81.60</td>
+                                <td>61.20</td>
+                                <td>71.60</td>
+                                <td>78.80</td>
+                                <td>73.30</td>
+                            </tr>
+                            <tr>
+                                <td>DropEdge</td>
+                                <td>82.00</td>
+                                <td>61.40</td>
+                                <td>71.80</td>
+                                <td>77.30</td>
+                                <td>73.13</td>
+                            </tr>
+                            <tr>
+                                <td>FLAG</td>
+                                <td>75.20</td>
+                                <td>62.90</td>
+                                <td>62.70</td>
+                                <td>78.50</td>
+                                <td>69.83</td>
+                            </tr>
+                            <tr>
+                                <td>LA</td>
+                                <td>84.60</td>
+                                <td>64.24</td>
+                                <td>74.70</td>
+                                <td>81.70</td>
+                                <td>76.31</td>
+                            </tr>
+                            <tr>
+                                <td>DoG</td>
+                                <td>84.00</td>
+                                <td>—</td>
+                                <td>73.60</td>
+                                <td>82.80</td>
+                                <td>80.13</td>
+                            </tr>
+                            <tr>
+                                <td><strong>D-GDA (Ours)</strong></td>
+                                <td><strong>89.10</strong></td>
+                                <td><strong>87.30</strong></td>
+                                <td><strong>81.50</strong></td>
+                                <td><strong>88.20</strong></td>
+                                <td><strong>86.53</strong></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3>ML Safety Measures</h3>
+                <p>D-GDA significantly enhances machine learning safety across multiple dimensions:</p>
+                <ul>
+                    <li><strong>Calibration:</strong> Better alignment between predicted probabilities and actual correctness</li>
+                    <li><strong>Corruption Robustness:</strong> Improved resistance to Gaussian, shot, impulse noise and feature shifts</li>
+                    <li><strong>Prediction Consistency:</strong> More stable predictions under minor input perturbations</li>
+                    <li><strong>Adversarial Robustness:</strong> Enhanced defense against Random, DICE, GF-Attack, and Meta-Attack</li>
+                </ul>
+
+                <h3>Diversity vs. Consistency</h3>
+                <div class="figure">
+                    <img src="https://via.placeholder.com/800x400/764ba2/ffffff?text=Diversity+vs+Consistency+Plot" alt="Diversity vs Consistency">
+                    <div class="figure-caption">Figure 2: D-GDA achieves an optimal balance between diversity and consistency, outperforming existing methods across multiple datasets.</div>
+                </div>
+            </section>
+
+            <section id="tasks">
+                <h2>Supported Tasks</h2>
+                <p>D-GDA is versatile and applies to multiple graph learning tasks:</p>
+                
+                <h3>Node Classification</h3>
+                <p>Generates neighborhood-aware augmented nodes that preserve class labels and local structure.</p>
+                
+                <h3>Link Prediction</h3>
+                <p>Creates augmented nodes connected to challenging edge pairs, improving link prediction accuracy.</p>
+                
+                <h3>Graph Classification</h3>
+                <p>Augments high-degree nodes in selected graphs to enhance graph-level representations.</p>
+                
+                <h3>Test-Time Augmentation</h3>
+                <p>Unlike label-dependent methods, D-GDA enables test-time augmentation for improved inference performance without requiring labels.</p>
+            </section>
+
+            <section id="comparison">
+                <h2>Comparison with State-of-the-Art</h2>
+                <p>D-GDA was evaluated against <strong>30 existing methods</strong> on <strong>12 benchmark datasets</strong> across various settings:</p>
+                <ul>
+                    <li>Semi-supervised learning</li>
+                    <li>Supervised learning</li>
+                    <li>Long-tailed data distributions</li>
+                    <li>Adversarial attack scenarios</li>
+                    <li>ML safety evaluations</li>
+                </ul>
+                <p>D-GDA consistently outperforms existing methods while being the only approach that supports all evaluated tasks and settings.</p>
+            </section>
+
+            <section id="citation">
+                <h2>Citation</h2>
+                <p>If you find our work useful, please cite:</p>
+                <div class="bibtex">
+@inproceedings{marrium2025dgda,
+  title={Diffusion-Guided Graph Data Augmentation},
+  author={Marrium, Maria and Mahmood, Arif and Khan, Muhammad Haris and 
+          Shakeel, Muhammad Saad and Kang, Wenxiong},
+  booktitle={39th Conference on Neural Information Processing Systems (NeurIPS)},
+  year={2025}
+}
+                </div>
+            </section>
+        </div>
+
+        <footer>
+            <p>&copy; 2025 D-GDA Research Team | NeurIPS 2025</p>
+            <p>For questions or collaborations, please reach out via GitHub</p>
+        </footer>
+    </div>
+</body>
+</html>
