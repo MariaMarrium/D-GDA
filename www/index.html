@@ -33,7 +33,7 @@
             text-align: center;
             border-radius: 15px;
             margin-bottom: 40px;
-            box-shadow: 0 10px 30px rgba(8, 145, 178, 0.4);
+            box-shadow: 0 60px 20px rgba(8, 145, 178, 0.4);
         }
 
         h1 {
@@ -410,6 +410,16 @@
                     <li><strong>Calibration:</strong> Better alignment between predicted probabilities and actual correctness.</li>
                     <li><strong>Corruption Robustness:</strong> Improved resistance to Gaussian, shot, impulse noise, and feature shifts.</li>
                     <li><strong>Prediction Consistency:</strong> More stable predictions under minor input perturbations.</li>
+                </ul>
+
+
+                <h3>Adversarial Robustness</h3>
+                <p>D-GDA significantly enhances adversarial robustness against different attacks:</p>
+                <ul>
+                    <li><strong>Random:</strong> Add/drop edges randomly.</li>
+                    <li><strong>DICE:</strong> Deletes intra-class edges and adds inter-class one.</li>
+                    <li><strong>GF-Attack:</strong> Optimizes a low-rank loss for structural perturbations.</li>
+                    <li><strong>Meta-Attack:</strong> Uses meta-gradient-based loss maximization.</li>
                 </ul>
 
                 <h3>Diversity vs. Consistency</h3>
