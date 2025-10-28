@@ -39,7 +39,7 @@
         h1 {
             font-size: 2.2em;
             margin-bottom: 25px;
-            font-weight: 600;
+            font-weight: 400;
             line-height: 1.3;
         }
 
@@ -95,7 +95,7 @@
 
         h2 {
             font-size: 1.6em;
-            background: #667eea;
+            background: #0891b2;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -347,19 +347,19 @@
                 <h2>Key Contributions</h2>
                 <div class="key-contributions">
                     <div class="contribution-card">
-                        <h4>1. Task-Agnostic Framework</h4>
+                        <h3>1. Task-Agnostic Framework</h3>
                         <p>We propose D-GDA, a label-free, diffusion-based graph data augmentation framework that excels in node classification, link prediction, and graph classification across semi-supervised, supervised, and long-tailed settings. It supports test-time augmentation for enhanced performance.</p>
                     </div>
                     <div class="contribution-card">
-                        <h4>2. Neighborhood-Aware Node Generation</h4>
+                        <h3>2. Neighborhood-Aware Node Generation</h3>
                         <p>D-GDA leverages a variational auto-encoder and latent diffusion model for proposed neighborhood-aware node generation, ensuring that augmentations preserve local graph structure while introducing meaningful diversity.</p>
                     </div>
                     <div class="contribution-card">
-                        <h4>3. Target Sample Selector</h4>
+                        <h3>3. Target Sample Selector</h3>
                         <p>D-GDA introduces a Target Sample Selector to identify effective candidates for augmentation, resulting in overall performance improvement for a fixed augmentation budget by focusing on challenging regions in the training data space.</p>
                     </div>
                     <div class="contribution-card">
-                        <h4>4. Enhanced ML Safety</h4>
+                        <h3>4. Enhanced ML Safety</h3>
                         <p>D-GDA enhances ML safety measures including calibration, resistance to corruption, and consistency. It is more robust against adversarial attacks (Random, DICE, GF, Meta-Attack) and converges to a flatter minima for improved generalization.</p>
                     </div>
                 </div>
@@ -383,6 +383,9 @@
                     
                     <h3>3. Latent Diffusion Model (LDM)</h3>
                     <p>Generates diverse augmentations conditioned on neighborhood embeddings. Unlike class-label conditioning, our neighborhood-aware conditioning ensures generated nodes preserve local graph structure while introducing meaningful diversity.</p>
+
+                    <h3>4. Test-Time Augmentation</h3>
+                    <p>Unlike label-dependent methods, D-GDA enables test-time augmentation for improved inference performance without requiring labels.</p>
                 </div>
 
                 <div class="figure">
@@ -393,90 +396,20 @@
 
             <section id="results">
                 <h2>Experimental Results</h2>
-                
-                <h3>Performance Improvements</h3>
-                <div class="results-grid">
-                    <p><strong>Cora:</strong> 89.10% (+7.5% improvement over GCN baseline)</p>
-                    <p><strong>Flickr:</strong> 87.30% (+26.1% improvement over GCN baseline)</p>
-                    <p><strong>Citeseer:</strong> 81.50% (+9.9% improvement over GCN baseline)</p>
-                    <p><strong>Pubmed:</strong> 88.20% (+9.4% improvement over GCN baseline)</p>
-                    <p><strong>Ogbn-Arxiv:</strong> 74.80% (+3.18% improvement over GCN baseline)</p>
-                    <p><strong>Ogbn-Products:</strong> 78.85% (+7.48% improvement over GCN baseline)</p>
-                </div>
 
-                <h3>Node Classification Performance</h3>
-                <div class="table-container">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Method</th>
-                                <th>Cora</th>
-                                <th>Flickr</th>
-                                <th>Citeseer</th>
-                                <th>Pubmed</th>
-                                <th>Mean</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>GCN (Baseline)</td>
-                                <td>81.60</td>
-                                <td>61.20</td>
-                                <td>71.60</td>
-                                <td>78.80</td>
-                                <td>73.30</td>
-                            </tr>
-                            <tr>
-                                <td>DropEdge</td>
-                                <td>82.00</td>
-                                <td>61.40</td>
-                                <td>71.80</td>
-                                <td>77.30</td>
-                                <td>73.13</td>
-                            </tr>
-                            <tr>
-                                <td>FLAG</td>
-                                <td>75.20</td>
-                                <td>62.90</td>
-                                <td>62.70</td>
-                                <td>78.50</td>
-                                <td>69.83</td>
-                            </tr>
-                            <tr>
-                                <td>LA</td>
-                                <td>84.60</td>
-                                <td>64.24</td>
-                                <td>74.70</td>
-                                <td>81.70</td>
-                                <td>76.31</td>
-                            </tr>
-                            <tr>
-                                <td>DoG</td>
-                                <td>84.00</td>
-                                <td>—</td>
-                                <td>73.60</td>
-                                <td>82.80</td>
-                                <td>80.13</td>
-                            </tr>
-                            <tr>
-                                <td><strong>D-GDA (Ours)</strong></td>
-                                <td><strong>89.10</strong></td>
-                                <td><strong>87.30</strong></td>
-                                <td><strong>81.50</strong></td>
-                                <td><strong>88.20</strong></td>
-                                <td><strong>86.53</strong></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+                <h3>Performance Comparison for Node Classification</h3>
+
+                <h3>Performance Comparison forLink Prediction</h3>
+
+                <h3>Performance Comparison for Graph Classification</h3>
+                
 
                 <h3>ML Safety Measures</h3>
                 <p>D-GDA significantly enhances machine learning safety across multiple dimensions:</p>
                 <ul>
-                    <li><strong>Calibration:</strong> Better alignment between predicted probabilities and actual correctness</li>
-                    <li><strong>Corruption Robustness:</strong> Improved resistance to Gaussian, shot, impulse noise and feature shifts</li>
-                    <li><strong>Prediction Consistency:</strong> More stable predictions under minor input perturbations</li>
-                    <li><strong>Adversarial Robustness:</strong> Enhanced defense against Random, DICE, GF-Attack, and Meta-Attack</li>
+                    <li><strong>Calibration:</strong> Better alignment between predicted probabilities and actual correctness.</li>
+                    <li><strong>Corruption Robustness:</strong> Improved resistance to Gaussian, shot, impulse noise, and feature shifts.</li>
+                    <li><strong>Prediction Consistency:</strong> More stable predictions under minor input perturbations.</li>
                 </ul>
 
                 <h3>Diversity vs. Consistency</h3>
@@ -486,47 +419,20 @@
                 </div>
             </section>
 
-            <section id="tasks">
-                <h2>Supported Tasks</h2>
-                <p>D-GDA is versatile and applies to multiple graph learning tasks:</p>
-                
-                <h3>Node Classification</h3>
-                <p>Generates neighborhood-aware augmented nodes that preserve class labels and local structure.</p>
-                
-                <h3>Link Prediction</h3>
-                <p>Creates augmented nodes connected to challenging edge pairs, improving link prediction accuracy.</p>
-                
-                <h3>Graph Classification</h3>
-                <p>Augments high-degree nodes in selected graphs to enhance graph-level representations.</p>
-                
-                <h3>Test-Time Augmentation</h3>
-                <p>Unlike label-dependent methods, D-GDA enables test-time augmentation for improved inference performance without requiring labels.</p>
-            </section>
+    
 
-            <section id="comparison">
-                <h2>Comparison with State-of-the-Art</h2>
-                <p>D-GDA was evaluated against <strong>30 existing methods</strong> on <strong>12 benchmark datasets</strong> across various settings:</p>
-                <ul>
-                    <li>Semi-supervised learning</li>
-                    <li>Supervised learning</li>
-                    <li>Long-tailed data distributions</li>
-                    <li>Adversarial attack scenarios</li>
-                    <li>ML safety evaluations</li>
-                </ul>
-                <p>D-GDA consistently outperforms existing methods while being the only approach that supports all evaluated tasks and settings.</p>
-            </section>
 
             <section id="citation">
                 <h2>Citation</h2>
                 <p>If you find our work useful, please cite:</p>
                 <div class="bibtex">
-@inproceedings{marrium2025dgda,
-  title={Diffusion-Guided Graph Data Augmentation},
-  author={Marrium, Maria and Mahmood, Arif and Khan, Muhammad Haris and 
-          Shakeel, Muhammad Saad and Kang, Wenxiong},
-  booktitle={39th Conference on Neural Information Processing Systems (NeurIPS)},
-  year={2025}
-}
+                @inproceedings{marrium2025dgda,
+                  title={Diffusion-Guided Graph Data Augmentation},
+                  author={Marrium, Maria and Mahmood, Arif and Khan, Muhammad Haris and 
+                          Shakeel, Muhammad Saad and Kang, Wenxiong},
+                  booktitle={39th Conference on Neural Information Processing Systems (NeurIPS)},
+                  year={2025}
+                }
                 </div>
             </section>
         </div>
